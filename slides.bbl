@@ -1,0 +1,71 @@
+\begin{thebibliography}{}
+
+\bibitem[Abbas {\em et~al.}(2009)Abbas, Wolslegel, Seshasayee, Modrusan, and
+  Clark]{Abbas2009}
+Abbas, A.~R., Wolslegel, K., Seshasayee, D., Modrusan, Z., and Clark, H.~F.
+  (2009).
+\newblock {Deconvolution of blood microarray data identifies cellular
+  activation patterns in systemic lupus erythematosus}.
+\newblock {\em PLoS ONE\/}, {\bf 4}(7).
+
+\bibitem[Altboum {\em et~al.}(2014)Altboum, Steuerman, David, Barnett-Itzhaki,
+  Valadarsky, Keren-Shaul, Meningher, Mendelson, Mandelboim, Gat-Viks, and
+  Amit]{Altboum2014}
+Altboum, Z., Steuerman, Y., David, E., Barnett-Itzhaki, Z., Valadarsky, L.,
+  Keren-Shaul, H., Meningher, T., Mendelson, E., Mandelboim, M., Gat-Viks, I.,
+  and Amit, I. (2014).
+\newblock {Digital cell quantification identifies global immune cell dynamics
+  during influenza infection}.
+\newblock {\em Molecular Systems Biology\/}, {\bf 10}(2), 1--14.
+
+\bibitem[Gong {\em et~al.}(2011)Gong, Hartmann, Kohane, Brinkmann, Staedtler,
+  Letzkus, Bongiovanni, and Szustakowski]{Gong2011}
+Gong, T., Hartmann, N., Kohane, I.~S., Brinkmann, V., Staedtler, F., Letzkus,
+  M., Bongiovanni, S., and Szustakowski, J.~D. (2011).
+\newblock {Optimal deconvolution of transcriptional profiling data using
+  quadratic programming with application to complex clinical blood samples}.
+\newblock {\em PLoS ONE\/}, {\bf 6}(11).
+
+\bibitem[Lu {\em et~al.}(2003)Lu, Nakorchevskiy, and Marcotte]{Lu2003}
+Lu, P., Nakorchevskiy, A., and Marcotte, E.~M. (2003).
+\newblock {Expression deconvolution: a reinterpretation of DNA microarray data
+  reveals dynamic changes in cell populations.}
+\newblock {\em Proceedings of the National Academy of Sciences of the United
+  States of America\/}, {\bf 100}(18), 10370--5.
+
+\bibitem[Newman {\em et~al.}(2015)Newman, {Chih Long Liu, Michael R. Green},
+  {Andrew J. Gentles}, {Yue Xu}, Diehn, and Alizadeh]{Newman2015}
+Newman, A.~M., {Chih Long Liu, Michael R. Green}, {Andrew J. Gentles}, W.~F.,
+  {Yue Xu}, C. D.~H., Diehn, M., and Alizadeh, A.~A. (2015).
+\newblock {Robust enumeration of cell subsets from tissue expression profiles}.
+\newblock {\em Nat Methods.}, {\bf 12}(5), 193--201.
+
+\bibitem[Qiao {\em et~al.}(2012)Qiao, Quon, Csaszar, Yu, Morris, and
+  Zandstra]{Qiao2012}
+Qiao, W., Quon, G., Csaszar, E., Yu, M., Morris, Q., and Zandstra, P.~W.
+  (2012).
+\newblock {PERT: A Method for Expression Deconvolution of Human Blood Samples
+  from Varied Microenvironmental and Developmental Conditions}.
+\newblock {\em PLoS Computational Biology\/}, {\bf 8}(12).
+
+\bibitem[Quon and Morris(2009)Quon and Morris]{Quon2009}
+Quon, G. and Morris, Q. (2009).
+\newblock {ISOLATE: A computational strategy for identifying the primary origin
+  of cancers using high-throughput sequencing}.
+\newblock {\em Bioinformatics\/}, {\bf 25}(21), 2882--2889.
+
+\bibitem[Quon {\em et~al.}(2013)Quon, Haider, Deshwar, Cui, Boutros, and
+  Morris]{Quon2013}
+Quon, G., Haider, S., Deshwar, A.~G., Cui, A., Boutros, P.~C., and Morris, Q.
+  (2013).
+\newblock {Computational purification of individual tumor gene expression
+  profiles leads to significant improvements in prognostic prediction.}
+\newblock {\em Genome medicine\/}, {\bf 5}(3), 29.
+
+\bibitem[Wang {\em et~al.}(2006)Wang, Master, and Chodosh]{Wang2006}
+Wang, M., Master, S.~R., and Chodosh, L.~a. (2006).
+\newblock {Computational expression deconvolution in a complex mammalian
+  organ.}
+\newblock {\em BMC bioinformatics\/}, {\bf 7}, 328.
+
+\end{thebibliography}

@@ -1,0 +1,182 @@
+#! /usr/bin/env Rscript
+suppressMessages({
+library('R.utils')
+    library('crayon')
+    library('beepr')
+    library('readr')
+})
+
+args <- commandArgs(trailingOnly = FALSE,asValues=TRUE)
+
+if(is.null(args$f)){
+    stop("Please provide a file name.\n")
+}
+fname = args$f
+
+bib=FALSE
+if(!is.null(args$bib)) bib = as.logical(args$bib)
+if(!is.null(args$nobib)) bib = !as.logical(args$nobib)
+
+diff=FALSE
+diff_ref = "reference"
+if(!is.null(args$diff)){
+    diff = args$diff
+    if(!is.logical(diff)){
+        diff_ref = diff
+        diff = TRUE
+    }
+}
+
+run_once=FALSE
+if(!is.null(args$ro))
+    run_once = args$ro
+
+cleanup=TRUE
+if(!is.null(args$cleanup)) cleanup = as.logical(args$cleanup)
+
+cat("fname =",fname,"\n")
+cat("bib =",bib,"\n")
+cat("diff =",diff,"\n")
+cat("diff_ref =",diff_ref,"\n")
+cat("run_once =",run_once,"\n")
+cat("cleanup =",cleanup,"\n")
+
+oldmt = file.info(dir(recursive=TRUE))[,"mtime",drop=FALSE]
+
+run_tex = function(fname){
+    tex_cmd = paste0("pdflatex -halt-on-error -file-line-error ",fname,".tex")
+    cat(tex_cmd,"\n")
+    toss = system(tex_cmd,intern=TRUE)
+    log_out = read_file(paste0(fname,".log"))
+    log_out = strsplit(log_out,"\n")[[1]]
+
+    ERR = grepl("error",tail(log_out,n=1))
+    
+    return(list("log"=log_out,"error"=ERR))
+}
+
+clean = function(){
+    cmd = paste0("make clean")
+    cat(cmd,"\n")
+    toss = system(cmd,intern=TRUE)
+    return(toss)
+}
+
+make_copy = function(fname){
+    tex_cmd = paste0("cp ",fname,".tex ./tex_drafts/",fname,"_",as.integer(Sys.time()),".tex")
+    cat(tex_cmd,"\n")
+    toss = system(tex_cmd,intern=TRUE)
+    return(toss)
+}
+
+make_diff = function(old,new){
+    tex_cmd = paste0('latexdiff --append-context2cmd="abstract" ',old,".tex ",new,".tex > diff.tex")
+    cat(tex_cmd,"\n")
+    toss = system(tex_cmd,intern=TRUE)
+    return(toss)
+}
+
+            
+
+run_bibtex = function(aux){
+    bibtex_cmd = paste0("bibtex ",aux)
+    cat(bibtex_cmd,"\n")
+    toss = system(bibtex_cmd,intern=TRUE)
+    ERR = grepl("error",tail(toss,n=1))
+    return(list("log"=toss,"error"=ERR))
+}
+
+show_err = function(msg=""){
+    out_msg = "Error.\n"
+    out_msg = paste(out_msg,msg)
+    cat(red(out_msg),"\n")
+    screen_msg = "Error."
+    toss = system(paste("echo '",screen_msg,"' |osd_cat -p middle -A center -d 1 -c 'red' -f -*-*-bold-*-*-*-30-*-*-*-*-*-*-* -s 1"))
+}
+
+show_ok = function(msg=""){
+    out_msg = "Ok."
+    out_msg = paste(out_msg,msg)
+    cat(green(out_msg),"\n")
+    toss = system(paste("echo '",out_msg,"' |osd_cat -p middle -A center -d 1 -c 'green' -f -*-*-bold-*-*-*-30-*-*-*-*-*-*-* -s 1"))
+}
+
+double_tex = function(fname,n=2){
+    for(i in 1:n){
+        to = run_tex(fname)
+        if(to$error) {
+            err_msg = paste0(tail(to$log,n=20),collapse="\n")
+            show_err(err_msg)
+            return(TRUE)
+        }
+    }
+    return(FALSE)
+}
+
+bib_all = function(){
+    auxfs = dir()[grepl(".aux",dir())]
+    for(aux in auxfs){
+        to = run_bibtex(aux)
+        if(to$error) {
+            show_err(paste0("Running bibtex. ",aux))
+            return(TRUE)
+        }
+    }
+    return(FALSE)
+}
+
+updated =  function(check=FALSE){
+    old_files <- rownames(oldmt)
+    old_files <- old_files[grepl(".tex$",old_files)]
+
+    if(!check) {
+        mt <<- file.info(dir(recursive=TRUE))[,"mtime",drop=FALSE]
+    } else {
+        mt <- file.info(dir(recursive=TRUE))[,"mtime",drop=FALSE]
+    }
+
+    updt = any(mt[old_files,,drop=FALSE] > oldmt[old_files,,drop=FALSE])
+
+    if(!check) oldmt <<- mt
+    return(updt)
+}
+
+if(run_once)
+    updated = function(check=FALSE) return(!check)
+
+updt = TRUE
+while(updt){
+
+    if(updated()){
+        cat(blue("Updating.\n"))
+
+        dir.create("./tex_drafts",showWarnings=FALSE)
+        make_copy(fname)
+
+        if(cleanup) clean()
+        if(double_tex(fname,n=1)) next
+        if(updated(check=TRUE)) next
+        if(bib)
+            if(bib_all()) next
+        if(updated(check=TRUE)) next
+        if(double_tex(fname)) next
+
+        if(diff){
+            make_diff(diff_ref,fname)
+            cmd = paste0("./build f=diff -bib=",bib," -ro -cleanup=FALSE")
+            cat(cmd,"\n")
+            toss = system(cmd,intern=FALSE)
+            toss = updated()
+        }
+
+        show_ok()
+        cat("==========\n")
+    }
+
+    if(run_once)
+        updt=FALSE
+    
+    Sys.sleep(1/10)
+}
+
+
